@@ -1,0 +1,35 @@
+HRT_Tracker/
+│
+├── app.py                     # Main entry point
+├── requirements.txt           # Dependencies
+├── README.md                  # Instructions for users
+│
+├── core/                      # Core logic (non-UI)
+│   ├── settings_manager.py    # Load/save theme + app settings
+│   ├── data_manager.py        # Load/save HRT entries, resources
+│   ├── theme_manager.py       # Accent color, background, theme logic
+│   └── utils.py               # Shared helpers
+│
+├── ui/                        # All CustomTkinter pages
+│   ├── __init__.py
+│   ├── hrt_log_page.py
+│   ├── history_page.py
+│   ├── resources_page.py
+│   ├── symptoms_page.py
+│   ├── settings_page.py       # Theme + color picker
+│   └── bug_report_page.py     # Plugin you requested
+│
+├── assets/                    # Icons, images, themes
+│   ├── icons/
+│   │   └── hrt_icon.png
+│   └── themes/
+│       └── custom_theme.json
+│
+├── data/                      # User data (safe, local)
+│   ├── hrt_entries.json
+│   ├── hrt_resources.json
+│   └── app_settings.json
+│
+├── dist/                      # PyInstaller output (ignored in git)
+│
+└── build/                     # PyInstaller build files (ignored)

@@ -1,0 +1,14 @@
+{
+  "resources": [
+    {
+      "name": "Resource 1",
+      "description": "Description for Resource 1",
+      "link": "http://example.com/resource1"
+    },
+    {
+      "name": "Resource 2",
+      "description": "Description for Resource 2",
+      "link": "http://example.com/resource2"
+    }
+  ]
+}
