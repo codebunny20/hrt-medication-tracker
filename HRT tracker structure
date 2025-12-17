@@ -1,35 +1,28 @@
 HRT_Tracker/
 │
-├── app.py                     # Main entry point
-├── requirements.txt           # Dependencies
-├── README.md                  # Instructions for users
+├── app.py              # Main app window + page navigation
+├── requirements.txt    # Python deps
 │
-├── core/                      # Core logic (non-UI)
-│   ├── settings_manager.py    # Load/save theme + app settings
-│   ├── data_manager.py        # Load/save HRT entries, resources
-│   ├── theme_manager.py       # Accent color, background, theme logic
-│   └── utils.py               # Shared helpers
+├── core/               # Non-UI logic
+│   ├── data_manager.py     # Load/save entries, resources, symptoms
+│   ├── settings_manager.py # Load/save app settings
+│   ├── theme_manager.py    # Load/save theme colors
+│   └── utils.py            # Small helpers (json, dates, ids)
 │
-├── ui/                        # All CustomTkinter pages
-│   ├── __init__.py
-│   ├── hrt_log_page.py
-│   ├── history_page.py
-│   ├── resources_page.py
-│   ├── symptoms_page.py
-│   ├── settings_page.py       # Theme + color picker
-│   └── bug_report_page.py     # Plugin you requested
+├── ui/                 # All CustomTkinter pages
+│   ├── hrt_log_page.py     # Add a new HRT log entry
+│   ├── history_page.py     # View past HRT entries
+│   ├── resources_page.py   # View / edit resource list
+│   ├── symptoms_page.py    # Log symptoms
+│   ├── settings_page.py    # Theme + accent color
+│   └── bug_report_page.py  # Free‑text bug report
 │
-├── assets/                    # Icons, images, themes
-│   ├── icons/
-│   │   └── hrt_icon.png
-│   └── themes/
-│       └── custom_theme.json
-│
-├── data/                      # User data (safe, local)
+├── data/               # Local JSON data (safe to delete if you want a reset)
 │   ├── hrt_entries.json
 │   ├── hrt_resources.json
+│   ├── symptoms.json
 │   └── app_settings.json
 │
-├── dist/                      # PyInstaller output (ignored in git)
-│
-└── build/                     # PyInstaller build files (ignored)
+└── assets/
+    └── themes/
+        └── custom_theme.json

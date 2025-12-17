@@ -10,6 +10,7 @@ class ResourcesPage(ctk.CTkFrame):
         super().__init__(master)
         data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
         self.data_manager = DataManager(data_dir)
+        # now returns the inner list from {"resources": [...]}
         self.resources = self.data_manager.load_hrt_resources()
         self._build_ui()
         self._load_resources()
@@ -56,8 +57,11 @@ class ResourcesPage(ctk.CTkFrame):
         name = ctk.CTkInputDialog(text="Enter resource name:", title="Add Resource").get_input()
         if not name:
             return
-        # store simple list of names for now
-        self.resources.append(name)
+        # store simple list of names or dicts; keep existing shape if possible
+        if self.resources and isinstance(self.resources[0], dict):
+            self.resources.append({"name": name})
+        else:
+            self.resources.append(name)
         self.data_manager.save_hrt_resources(self.resources)
         self._load_resources()
 

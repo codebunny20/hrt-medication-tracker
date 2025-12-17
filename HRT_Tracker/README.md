@@ -12,7 +12,7 @@ The project is organized into several directories and files:
 - **.gitignore**: Specifies files and directories to be ignored by Git.
 - **core/**: Contains the core logic of the application.
   - **settings_manager.py**: Manages application settings and themes.
-  - **data_manager.py**: Handles data persistence for HRT entries and resources.
+  - **data_manager.py**: Handles data persistence for HRT entries, resources, and symptoms.
   - **theme_manager.py**: Manages the application's theme settings.
   - **utils.py**: Provides shared helper functions.
 - **ui/**: Contains the user interface components.
@@ -28,27 +28,43 @@ The project is organized into several directories and files:
 - **tests/**: Contains unit tests for core functionalities.
 
 ## Installation
-To set up the project, follow these steps:
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd HRT_Tracker
-   ```
+From the project root:
 
-2. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+```bash
+cd "c:\Users\Admin\HRTtrackerversion2"
+pip install -r HRT_Tracker/requirements.txt
+```
+
+Or from inside the `HRT_Tracker` directory:
+
+```bash
+cd "c:\Users\Admin\HRTtrackerversion2\HRT_Tracker"
+pip install -r requirements.txt
+```
 
 ## Usage
-To run the application, execute the following command:
-```
-python app.py
-```
+
+Run the application from either location:
+
+- From project root:
+
+  ```bash
+  cd "c:\Users\Admin\HRTtrackerversion2"
+  python HRT_Tracker/app.py
+  ```
+
+- From inside `HRT_Tracker`:
+
+  ```bash
+  cd "c:\Users\Admin\HRTtrackerversion2\HRT_Tracker"
+  python app.py
+  ```
+
+The code in `app.py` adjusts `sys.path` so that `core` and `ui` imports, along with relative `data/` and `assets/` paths, work correctly in both cases.
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any suggestions or improvements.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the LICENSE file in the project root for details.

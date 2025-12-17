@@ -1,5 +1,20 @@
+import os
+import sys
 import customtkinter as ctk
-import tkinter as tk
+
+# --- make imports work no matter where you run from ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# ensure the directory that contains the "core" and "ui" packages is on sys.path
+# e.g. ...\HRT_Tracker
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
+# if user runs "python HRT_Tracker\app.py" from repo root,
+# also ensure repo root is on sys.path (useful for some tools/tests)
+REPO_ROOT = os.path.dirname(BASE_DIR)
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from ui.settings_page import SettingsPage
 from ui.hrt_log_page import HRTLogPage
@@ -7,64 +22,66 @@ from ui.history_page import HistoryPage
 from ui.resources_page import ResourcesPage
 from ui.symptoms_page import SymptomsPage
 from ui.bug_report_page import BugReportPage
+from core.settings_manager import SettingsManager
 
 
 class HRTTrackerApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # basic window config
+        # simpler window config
         self.title("HRT Tracker")
-        self.geometry("1000x650")
+        self.geometry("900x600")
+        self.minsize(800, 500)
 
-        # grid layout: sidebar (col 0) + content (col 1)
-        self.grid_columnconfigure(0, weight=0)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        # layout: top nav (row 0) + content (row 1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
-        # sidebar
-        self.sidebar = ctk.CTkFrame(self, width=200, corner_radius=0)
-        self.sidebar.grid(row=0, column=0, sticky="nsw")
-        self.sidebar.grid_rowconfigure(6, weight=1)
+        # top navigation bar
+        self.navbar = ctk.CTkFrame(self, height=48, corner_radius=0)
+        self.navbar.grid(row=0, column=0, sticky="ew")
+        self.navbar.grid_columnconfigure(6, weight=1)
 
         self.logo_label = ctk.CTkLabel(
-            self.sidebar, text="HRT Tracker", font=ctk.CTkFont(size=20, weight="bold")
+            self.navbar, text="HRT Tracker", font=ctk.CTkFont(size=20, weight="bold")
         )
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.logo_label.grid(row=0, column=0, padx=(16, 24), pady=8)
 
-        self.btn_settings = ctk.CTkButton(
-            self.sidebar, text="Settings", command=self.show_settings_page
-        )
-        self.btn_settings.grid(row=1, column=0, padx=20, pady=5, sticky="ew")
-
+        # navigation buttons (ordered by typical usage)
         self.btn_hrt_log = ctk.CTkButton(
-            self.sidebar, text="Log HRT", command=self.show_hrt_log_page
+            self.navbar, text="Log HRT", width=90, command=self.show_hrt_log_page
         )
-        self.btn_hrt_log.grid(row=2, column=0, padx=20, pady=5, sticky="ew")
+        self.btn_hrt_log.grid(row=0, column=1, padx=4, pady=8)
 
         self.btn_history = ctk.CTkButton(
-            self.sidebar, text="History", command=self.show_history_page
+            self.navbar, text="History", width=90, command=self.show_history_page
         )
-        self.btn_history.grid(row=3, column=0, padx=20, pady=5, sticky="ew")
-
-        self.btn_resources = ctk.CTkButton(
-            self.sidebar, text="Resources", command=self.show_resources_page
-        )
-        self.btn_resources.grid(row=4, column=0, padx=20, pady=5, sticky="ew")
+        self.btn_history.grid(row=0, column=2, padx=4, pady=8)
 
         self.btn_symptoms = ctk.CTkButton(
-            self.sidebar, text="Symptoms", command=self.show_symptoms_page
+            self.navbar, text="Symptoms", width=90, command=self.show_symptoms_page
         )
-        self.btn_symptoms.grid(row=5, column=0, padx=20, pady=5, sticky="ew")
+        self.btn_symptoms.grid(row=0, column=3, padx=4, pady=8)
+
+        self.btn_resources = ctk.CTkButton(
+            self.navbar, text="Resources", width=90, command=self.show_resources_page
+        )
+        self.btn_resources.grid(row=0, column=4, padx=4, pady=8)
 
         self.btn_bug_report = ctk.CTkButton(
-            self.sidebar, text="Bug Report", command=self.show_bug_report_page
+            self.navbar, text="Bug Report", width=100, command=self.show_bug_report_page
         )
-        self.btn_bug_report.grid(row=6, column=0, padx=20, pady=5, sticky="ew")
+        self.btn_bug_report.grid(row=0, column=5, padx=4, pady=8)
 
-        # content container
+        self.btn_settings = ctk.CTkButton(
+            self.navbar, text="Settings", width=90, command=self.show_settings_page
+        )
+        self.btn_settings.grid(row=0, column=6, padx=(4, 16), pady=8, sticky="e")
+
+        # main content area
         self.content = ctk.CTkFrame(self)
-        self.content.grid(row=0, column=1, sticky="nsew")
+        self.content.grid(row=1, column=0, sticky="nsew")
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
 
@@ -77,9 +94,9 @@ class HRTTrackerApp(ctk.CTk):
         self.pages["symptoms"] = SymptomsPage(self.content)
         self.pages["bug_report"] = BugReportPage(self.content)
 
-        # show default page
+        # show default page: logging HRT is the primary action
         self.current_page = None
-        self.show_settings_page()
+        self.show_hrt_log_page()
 
     def _show_page(self, key: str):
         if self.current_page is not None:
@@ -108,9 +125,16 @@ class HRTTrackerApp(ctk.CTk):
 
 
 def main():
-    # global CustomTkinter appearance
-    ctk.set_appearance_mode("system")  # or "dark", "light"
-    ctk.set_default_color_theme("blue")  # can later wire this to ThemeManager
+    # global CustomTkinter appearance, driven by saved settings when available
+    settings = SettingsManager()
+    theme = settings.get_setting("theme", "System")
+    mode = "system"
+    if str(theme).lower() == "light":
+        mode = "light"
+    elif str(theme).lower() == "dark":
+        mode = "dark"
+    ctk.set_appearance_mode(mode)
+    ctk.set_default_color_theme("blue")
 
     app = HRTTrackerApp()
     app.mainloop()

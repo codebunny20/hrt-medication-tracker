@@ -1,13 +1,13 @@
 {
-  "theme": {
-    "primary_color": "#3498db",
-    "secondary_color": "#2ecc71",
-    "background_color": "#ecf0f1",
-    "text_color": "#2c3e50",
-    "accent_color": "#e74c3c",
-    "font": {
-      "family": "Arial, sans-serif",
-      "size": "14px"
+    "theme": {
+        "primary_color": "#3498db",
+        "secondary_color": "#2ecc71",
+        "background_color": "#ecf0f1",
+        "text_color": "#2c3e50",
+        "accent_color": "#34568db",
+        "font": {
+            "family": "Arial, sans-serif",
+            "size": "14px"
+        }
     }
-  }
 }

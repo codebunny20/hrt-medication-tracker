@@ -34,9 +34,12 @@ class HistoryPage(ctk.CTkFrame):
     def _load_entries(self):
         self.entry_list.delete(0, END)
         entries = self.data_manager.load_hrt_entries()
-        # expect list of dicts with 'entry'; handle plain strings too
+        # expect list of dicts with 'entry' and optional 'timestamp'
         for e in entries:
             if isinstance(e, dict):
-                self.entry_list.insert(END, e.get("entry", str(e)))
+                text = e.get("entry", "")
+                ts = e.get("timestamp")
+                display = f"{ts} - {text}" if ts else text
+                self.entry_list.insert(END, display)
             else:
                 self.entry_list.insert(END, str(e))
