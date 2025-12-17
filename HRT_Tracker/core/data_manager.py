@@ -28,7 +28,28 @@ class DataManager:
             json.dump(wrapped, f, indent=4)
 
     def load_hrt_entries(self):
-        return self._load_list_or_wrapped(self.hrt_entries_file, "entries")
+        """Return list of HRT entries.
+
+        Each entry may be a simple dict like:
+          {"entry": "text", "timestamp": "..."}
+        or a richer dict with fields such as:
+          {"id": "...", "title": "...", "date": "YYYY-MM-DD", "time": "HH:MM",
+           "mood": "...", "symptoms": "...", "notes": "...",
+           "medications": [...], "timestamp": "..."}
+        Ensures that each entry dict has an 'id' field for internal use.
+        """
+        entries = self._load_list_or_wrapped(self.hrt_entries_file, "entries")
+        # ensure each dict entry has an id; non-dict entries are left as-is
+        changed = False
+        for e in entries:
+            if isinstance(e, dict) and "id" not in e:
+                # simple incremental id based on index + timestamp to avoid collisions
+                e["id"] = f"{int(os.path.getmtime(self.hrt_entries_file)) if os.path.exists(self.hrt_entries_file) else 0}-{id(e)}"
+                changed = True
+        if changed:
+            # persist ids so future loads see stable identifiers
+            self.save_hrt_entries(entries)
+        return entries
 
     def save_hrt_entries(self, entries):
         self._save_list_or_wrapped(self.hrt_entries_file, "entries", entries)

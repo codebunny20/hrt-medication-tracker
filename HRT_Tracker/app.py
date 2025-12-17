@@ -31,8 +31,8 @@ class HRTTrackerApp(ctk.CTk):
 
         # simpler window config
         self.title("HRT Tracker")
-        self.geometry("900x600")
-        self.minsize(800, 500)
+        self.geometry("800x600")
+        self.minsize(800, 700)
 
         # layout: top nav (row 0) + content (row 1)
         self.grid_rowconfigure(1, weight=1)
@@ -104,6 +104,10 @@ class HRTTrackerApp(ctk.CTk):
         page = self.pages[key]
         page.grid(row=0, column=0, sticky="nsew")
         self.current_page = page
+        # notify page that it is now visible (useful for quick focus behavior)
+        on_show = getattr(page, "on_show", None)
+        if callable(on_show):
+            on_show()
 
     def show_settings_page(self):
         self._show_page("settings")
