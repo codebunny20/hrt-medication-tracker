@@ -22,6 +22,7 @@ from ui.history_page import HistoryPage
 from ui.resources_page import ResourcesPage
 from ui.symptoms_page import SymptomsPage
 from ui.bug_report_page import BugReportPage
+from ui.help_page import HelpPage  # NEW
 from core.settings_manager import SettingsManager
 
 
@@ -31,8 +32,17 @@ class HRTTrackerApp(ctk.CTk):
 
         # simpler window config
         self.title("HRT Tracker")
-        self.geometry("800x600")
-        self.minsize(800, 700)
+        self.minsize(1000, 750)
+
+        # snap window to top-left of the current screen, keeping size
+        width, height = 1050, 750
+        try:
+            screen_x = self.winfo_screenx()
+            screen_y = self.winfo_screeny()
+        except Exception:
+            screen_x = 0
+            screen_y = 0
+        self.geometry(f"{width}x{height}+{screen_x}+{screen_y}")
 
         # layout: top nav (row 0) + content (row 1)
         self.grid_rowconfigure(1, weight=1)
@@ -41,7 +51,7 @@ class HRTTrackerApp(ctk.CTk):
         # top navigation bar
         self.navbar = ctk.CTkFrame(self, height=48, corner_radius=0)
         self.navbar.grid(row=0, column=0, sticky="ew")
-        self.navbar.grid_columnconfigure(6, weight=1)
+        self.navbar.grid_columnconfigure(7, weight=1)  # was 6, shift right for Help
 
         self.logo_label = ctk.CTkLabel(
             self.navbar, text="HRT Tracker", font=ctk.CTkFont(size=20, weight="bold")
@@ -74,10 +84,16 @@ class HRTTrackerApp(ctk.CTk):
         )
         self.btn_bug_report.grid(row=0, column=5, padx=4, pady=8)
 
+        # NEW: Help button
+        self.btn_help = ctk.CTkButton(
+            self.navbar, text="Help", width=80, command=self.show_help_page
+        )
+        self.btn_help.grid(row=0, column=6, padx=4, pady=8)
+
         self.btn_settings = ctk.CTkButton(
             self.navbar, text="Settings", width=90, command=self.show_settings_page
         )
-        self.btn_settings.grid(row=0, column=6, padx=(4, 16), pady=8, sticky="e")
+        self.btn_settings.grid(row=0, column=7, padx=(4, 16), pady=8, sticky="e")
 
         # main content area
         self.content = ctk.CTkFrame(self)
@@ -93,6 +109,7 @@ class HRTTrackerApp(ctk.CTk):
         self.pages["resources"] = ResourcesPage(self.content)
         self.pages["symptoms"] = SymptomsPage(self.content)
         self.pages["bug_report"] = BugReportPage(self.content)
+        self.pages["help"] = HelpPage(self.content)  # NEW
 
         # show default page: logging HRT is the primary action
         self.current_page = None
@@ -126,6 +143,9 @@ class HRTTrackerApp(ctk.CTk):
 
     def show_bug_report_page(self):
         self._show_page("bug_report")
+
+    def show_help_page(self):  # NEW
+        self._show_page("help")
 
 
 def main():
