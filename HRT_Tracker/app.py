@@ -3,7 +3,11 @@ import sys
 import customtkinter as ctk
 
 # --- make imports work no matter where you run from ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# When PyInstaller bundles to onefile, data files are extracted to sys._MEIPASS.
+if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+    BASE_DIR = sys._MEIPASS
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ensure the directory that contains the "core" and "ui" packages is on sys.path
 # e.g. ...\HRT_Tracker
@@ -32,10 +36,10 @@ class HRTTrackerApp(ctk.CTk):
 
         # simpler window config
         self.title("HRT Tracker")
-        self.minsize(1000, 750)
+        self.minsize(1040, 790)
 
         # snap window to top-left of the current screen, keeping size
-        width, height = 1050, 750
+        width, height = 1040, 790
         try:
             screen_x = self.winfo_screenx()
             screen_y = self.winfo_screeny()

@@ -1,7 +1,6 @@
 HRT_Tracker/
 │
 ├── app.py              # Main app window + page navigation
-├── requirements.txt    # Python deps
 │
 ├── core/               # Non-UI logic
 │   ├── data_manager.py     # Load/save entries, resources, symptoms
