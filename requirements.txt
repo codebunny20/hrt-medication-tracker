@@ -1,0 +1,5 @@
+customtkinter
+pyinstaller
+# add other deps your app needs, e.g.:
+# pandas
+# pillow

@@ -64,3 +64,24 @@
   - Status bar for transient messages
   - Snap window geometry to monitor under cursor
   - Safe reload/apply theme and settings, robust error handling
+
+  hrt_tracker4/
+│
+├── main.py
+├── ui/
+│   ├── __init__.py
+│   ├── layout.py
+│   └── theme.json
+│
+├── assets/
+│   ├── icon.ico
+│   ├── logo.png
+│   └── fonts/
+│       └── Inter-Regular.ttf
+│
+├── data/
+│   └── hrt_log.json
+│
+└── utils/
+    ├── __init__.py
+    └── paths.py
