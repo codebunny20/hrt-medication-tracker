@@ -5,7 +5,12 @@ import os
 from tkinter import messagebox
 import tkinter as tk
 
-DATA_FILE = "hrt_journal_data.json"
+# Store journal data under: <this folder>\entrys\hrt_journal_data.json
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_ENTRYS_DIR = os.path.join(_BASE_DIR, "entrys")
+os.makedirs(_ENTRYS_DIR, exist_ok=True)
+
+DATA_FILE = os.path.join(_ENTRYS_DIR, "hrt_journal_data.json")
 
 
 def load_data():
@@ -441,4 +446,4 @@ class HRTJournalApp(ctk.CTk):
 
 if __name__ == "__main__":
     app = HRTJournalApp()
-    app.mainloop() 
+    app.mainloop()
