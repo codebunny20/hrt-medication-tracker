@@ -1,5 +1,0 @@
-customtkinter>=5.2.0
-Pillow>=10.0.0
-# testing (optional; only needed if you want to run tests)
-pytest>=6.2.4
-jsonschema==3.2.0
